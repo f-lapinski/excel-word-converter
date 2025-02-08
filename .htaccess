@@ -1,18 +1,22 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Ensure the request is not for an existing file or directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect all requests to /public/
+RewriteRule ^(.*)$ /public/$1 [L]
+
 # Prevent direct access to PHP files in /src
 <FilesMatch "\.php$">
-    Order Deny,Allow
+    Order Allow,Deny
     Deny from all
 </FilesMatch>
 
-# Allow access to public directory only
-RewriteEngine On
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteCond %{REQUEST_URI} !^/vendor/
-RewriteRule ^(.*)$ /public/$1 [L]
-
 # Block direct access to uploads directory (allow only via PHP processing)
 <Directory "/uploads">
-    Order Deny,Allow
+    Order Allow,Deny
     Deny from all
 </Directory>
 
