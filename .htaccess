@@ -1,0 +1,20 @@
+# Prevent direct access to PHP files in /src
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow access to public directory only
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/vendor/
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# Block direct access to uploads directory (allow only via PHP processing)
+<Directory "/uploads">
+    Order Deny,Allow
+    Deny from all
+</Directory>
+
+# Serve index.php as the default file
+DirectoryIndex index.php
